@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Noto_Kufi_Arabic } from "next/font/google";
+import { Inter, Noto_Kufi_Arabic } from "next/font/google";
 import "./globals.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
@@ -8,8 +8,9 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ClientLayout from "./components/layout/ClientLayout";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// استخدام خط Inter بدل Geist
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -31,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${geistSans.variable} ${kufiArabic.className} antialiased min-h-screen bg-gray-50`}>
+      <body className={`${inter.variable} ${kufiArabic.className} antialiased min-h-screen bg-gray-50`}>
         <ClientLayout>
           <div className="flex flex-col min-h-screen">
             <Header />
