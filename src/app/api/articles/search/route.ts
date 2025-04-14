@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -10,35 +9,29 @@ export async function GET(request: Request) {
   }
 
   try {
-    const articles = await prisma.article.findMany({
-      where: {
-        OR: [
-          {
-            title: {
-              contains: query,
-              mode: 'insensitive',
-            },
-          },
-          {
-            body: {
-              contains: query,
-              mode: 'insensitive',
-            },
-          },
-        ],
+    // بيانات وهمية مؤقتة
+    const dummyArticles = [
+      {
+        id: 1,
+        title: 'Marketing Tips for Beginners',
+        body: 'Learn how to kickstart your marketing career with these essential tips...',
+        createdAt: new Date(),
       },
-      select: {
-        id: true,
-        title: true,
-        body: true,
-        createdAt: true,
+      {
+        id: 2,
+        title: 'SEO Strategies for 2024',
+        body: 'This article explores top SEO strategies that will dominate in 2024...',
+        createdAt: new Date(),
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+    ];
 
-    return NextResponse.json(articles);
+    // فلترة بناءً على الـ query
+    const filteredArticles = dummyArticles.filter(article =>
+      article.title.toLowerCase().includes(query.toLowerCase()) ||
+      article.body.toLowerCase().includes(query.toLowerCase())
+    );
+
+    return NextResponse.json(filteredArticles);
   } catch (error) {
     console.error('Search error:', error);
     return NextResponse.json(
@@ -46,4 +39,4 @@ export async function GET(request: Request) {
       { status: 500 }
     );
   }
-} 
+}
